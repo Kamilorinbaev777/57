@@ -33,7 +33,7 @@ async def handle_group_buttons(
     ):
     user_id = callback.from_user.id
     await state.set_state(newNotificaton.group)
-    await callback.message.answer(
+    await callback.message.edit_text(
         "Choose a group from the list",
         reply_markup=group_list(user_id=user_id)
         )
@@ -70,7 +70,7 @@ async def cancel_notification(
                 reply_markup=back_to_mainkb
             )
     except:
-        await callback.message.answer(
+        await callback.message.edit_text(
             "Notification cancelled",
             reply_markup=back_to_mainkb
         )
