@@ -1,4 +1,4 @@
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
-import pytz
+from zoneinfo import ZoneInfo
 
-scheduler = AsyncIOScheduler(timezone="Asia/Tashkent")
+scheduler = AsyncIOScheduler(timezone=ZoneInfo("Asia/Tashkent"))

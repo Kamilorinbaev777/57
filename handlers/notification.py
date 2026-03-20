@@ -1,4 +1,3 @@
-import pytz
 from aiogram import Bot, F, Router
 from aiogram.types import Message, CallbackQuery
 from aiogram.fsm.context import FSMContext
@@ -9,6 +8,7 @@ from keyboards.start import main_kb, group_list, cancel_notifykb, back_to_mainkb
 from services.notificationlist import add_notification, get_notification_bytime, update_status, update_job_id
 from scheduler import scheduler
 from datetime import datetime
+from zoneinfo import ZoneInfo
 router = Router()
 
 router.message.filter(F.chat.type == "private")
@@ -118,8 +118,9 @@ async def handle_date_state(
     ):
     try: 
         date = message.text
-        tz = pytz.timezone("Asia/Tashkent")
-        run_time = tz.localize(datetime.strptime(date, "%Y-%m-%d %H:%M"))
+        tz = ZoneInfo("Asia/Tashkent")
+        run_time = datetime.strptime(date, "%Y-%m-%d %H:%M")
+        run_time = run_time.replace(tzinfo=tz)
         print("Scheduler running:", scheduler.running)
         print("Now:", datetime.now())
         print("Run time:", run_time)
