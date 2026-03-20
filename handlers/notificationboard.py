@@ -122,9 +122,9 @@ async def handle_notif_deletion(
     try:
         if status != "pending":
             remove_notification(user_id=user_id, Notif_id=notif_id)
-            await callback.answer(
+            await callback.message.answer(
                 "🗑️ Notification deleted successfully",
-                show_alert=True
+                reply_markup=back_to_mainkb
                 )
         else:
             await callback.answer(
