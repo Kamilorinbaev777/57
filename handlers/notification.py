@@ -1,3 +1,4 @@
+import pytz
 from aiogram import Bot, F, Router
 from aiogram.types import Message, CallbackQuery
 from aiogram.fsm.context import FSMContext
@@ -117,7 +118,8 @@ async def handle_date_state(
     ):
     try: 
         date = message.text
-        run_time = datetime.strptime(date, "%Y-%m-%d %H:%M")
+        tz = pytz.timezone("Asia/Tashkent")
+        run_time = tz.localize(datetime.strptime(date, "%Y-%m-%d %H:%M"))
         print("Scheduler running:", scheduler.running)
         print("Now:", datetime.now())
         print("Run time:", run_time)
