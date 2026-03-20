@@ -19,6 +19,15 @@ def notif_kbds(user_id):
         except Exception:
             pass
 
+    if len(keyboard) > 2:
+        keyboard.append(
+            [InlineKeyboardButton(
+                text="Delete all",
+                callback_data='delete_allnotifs',
+                style='danger'
+                )]
+            )
+
     keyboard.append(
         [InlineKeyboardButton(
             text="Back",
@@ -44,5 +53,21 @@ def notif_page_kbds(user_id, notif_id):
                 text="Back",
                 callback_data='backto_main'
                 )],
+        ]
+    )
+
+def notif_page_kbds1(user_id, notif_id):    
+    return InlineKeyboardMarkup(
+        inline_keyboard=[
+            [InlineKeyboardButton(
+                text="Reject",
+                callback_data=f'reject_{user_id}_{notif_id}',
+                style='danger'
+                )],
+            [InlineKeyboardButton(
+                text="Delete",
+                callback_data=f'del_{user_id}_{notif_id}',
+                style='danger'
+                )]
         ]
     )

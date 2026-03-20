@@ -1,4 +1,4 @@
-from aiogram import Bot, F, Router
+﻿from aiogram import Bot, F, Router
 from aiogram.types import Message, CallbackQuery
 from aiogram.fsm.context import FSMContext
 
@@ -50,7 +50,8 @@ async def back_to_main(
     bot_info = await bot.get_me()
     username = callback.from_user.username
     await callback.message.edit_text(
-        f"Welcome @{username}",
+        f"""
+        👋 Welcome, @{username}!\n\nLet’s set up your next notification 🔔""",
         reply_markup=main_kb(bot_info.username)
         )
     await callback.answer()
@@ -67,12 +68,12 @@ async def cancel_notification(
     try:
         if callback.message:
             await callback.message.edit_text(
-                "Notification cancelled",
+                "❌ Cancelled",
                 reply_markup=back_to_mainkb
             )
     except:
         await callback.message.edit_text(
-            "Notification cancelled",
+            "❌ Cancelled",
             reply_markup=back_to_mainkb
         )
 
@@ -85,7 +86,7 @@ async def handle_group_button(
     await state.update_data(group=group_id)
     await state.set_state(newNotificaton.content)
     await callback.message.edit_text(
-        "Send me your notification message",
+        """✉️ Send the message you want to notify\n\nYou can send text or a photo 📸""",
         reply_markup=cancel_notifykb
         )
     await callback.answer()
@@ -108,7 +109,9 @@ async def handle_notification_send(
             content=message.text
             )
     await state.set_state(newNotificaton.date)
-    await message.answer("Send me exact date time in the format YYYY-MM-DD HH:MM")
+    await message.answer(
+    """📅 When should I send your notification?\n\nFormat:\nYYYY-MM-DD HH:MM\n\nExample:\n2026-03-25 18:30 ⏰
+    """)
 
 @router.message(newNotificaton.date)
 async def handle_date_state(
@@ -126,7 +129,7 @@ async def handle_date_state(
         print("Run time:", run_time)
     except Exception:
         await message.answer(
-            "Invalid data!, try again",
+            """❌ Invalid input\n\nTry again""",
             reply_markup=back_to_mainkb
             )
         return
@@ -171,10 +174,18 @@ async def handle_date_state(
         update_job_id(user_id, notif_id, job_id)
         
         await message.answer(
-            "Notification has been scheduled successfully!",
+            """
+            🎉 Your notification has been scheduled!
+
+I’ll take care of the rest ⏰
+            """,
             reply_markup=back_to_mainkb
             )
         print("MAIN scheduler:", id(scheduler))
     except Exception:
-        await message.answer("Notification was not scheduled",
-                             reply_markup=back_to_mainkb)
+        await message.answer(
+        """
+        ❌ Failed to schedule the notification
+
+Please try again 👇
+        """, reply_markup=back_to_mainkb)
