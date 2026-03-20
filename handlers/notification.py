@@ -118,6 +118,9 @@ async def handle_date_state(
     try: 
         date = message.text
         run_time = datetime.strptime(date, "%Y-%m-%d %H:%M")
+        print("Scheduler running:", scheduler.running)
+        print("Now:", datetime.now())
+        print("Run time:", run_time)
     except Exception:
         await message.answer(
             "Invalid data!, try again",

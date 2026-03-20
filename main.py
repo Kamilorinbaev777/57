@@ -9,15 +9,12 @@ from handlers.notificationboard import router as notif_board_router
 
 from storage.notifications import create_notifications_table
 from storage.user_group import create_usergroup_table
-from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from scheduler import scheduler
 
 load_dotenv()
 
 async def main():
-
-    scheduler = AsyncIOScheduler()
     scheduler.start()
-
     TOKEN = os.getenv('TOKEN')
     bot = Bot(TOKEN)
     dp = Dispatcher()
